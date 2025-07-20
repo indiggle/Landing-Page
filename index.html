@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Iñdie Studios</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 40px;
+    }
+
+    .header {
+      text-align: center;
+      color: purple;
+      margin-bottom: 30px;
+      font-size: 2rem;
+    }
+
+    form {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #cccccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #E6E6FA;
+      color: #555555;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .success {
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #4CAF50; /* green success */
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1 class="header">Are you an Ateneo Musician's Pool Member?</h1>
+    <h2 class="header two">Learn the First Step to Better Recordings!</h2>
+  </div>
+
+  <div>
+    <form id="contactForm">
+      <input type="text" name="firstname" placeholder="Your First Name" required />
+      <input type="text" name="lastname" placeholder="Your Last Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <input type="tel" name="phone" placeholder="Your Phone Number" required />
+      <textarea name="message" placeholder="Your Roster" rows="5"></textarea>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="success" id="successMessage"></div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwLJlcBiXnF0G5IPwcbxMmZN5GBnHCEAtqf1oLIuL35Y2J4SE9cwcslhTvPlydpGZkF/exec";
+    const form = document.getElementById("contactForm");
+    const successMessage = document.getElementById("successMessage");
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+
+      const formData = {
+        firstname: form.firstname.value,
+        lastname: form.lastname.value,
+        email: form.email.value,
+        phone: form.phone.value,
+        message: form.message.value
+      };
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(formData)
+      })
+      .then(response => {
+        if (response.ok) {
+          successMessage.textContent = "Thanks! We'll be in touch soon.";
+          form.reset();
+        } else {
+          successMessage.textContent = "Something went wrong. Try again!";
+        }
+      })
+      .catch(error => {
+        successMessage.textContent = "Error sending message.";
+        console.error('Error!', error.message);
+      });
+    });
+  </script>
+</body>
+</html>
