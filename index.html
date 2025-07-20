@@ -75,42 +75,36 @@
 
   <div class="success" id="successMessage"></div>
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycby4BkLgF5FqbJPXe1l8Tr3TK4cLyCEsOzP8CAB1ggzpNwsmXY49d3p805pV5iMSz9bD/exec";
-    const form = document.getElementById("contactForm");
-    const successMessage = document.getElementById("successMessage");
+<script>
+  const scriptURL = "https://script.google.com/macros/s/AKfycby4BkLgF5FqbJPXe1l8Tr3TK4cLyCEsOzP8CAB1ggzpNwsmXY49d3p805pV5iMSz9bD/exec";
+  const form = document.getElementById("contactForm");
+  const successMessage = document.getElementById("successMessage");
 
-form.addEventListener("submit", e => {
-  e.preventDefault();
+  form.addEventListener("submit", e => {
+    e.preventDefault();
 
-  const formData = {
-    firstname: form.firstname.value,
-    lastname: form.lastname.value,
-    email: form.email.value,
-    phone: form.phone.value,
-    roster: form.roster.value
-  };
+    const formPayload = new FormData(form);
 
-  fetch(scriptURL, {
-    method: 'POST',
-    body: JSON.stringify(formData)
-  })
-  .then(response => {
-    if (response.ok) {
-      successMessage.textContent = "Thanks! We'll be in touch soon.";
-      form.reset();
-      document.getElementById('popup').style.display = 'flex';  // 👈 show popup
-    } else {
-      successMessage.textContent = "Something went wrong. Try again!";
-    }
-  })
-  .catch(error => {
-    successMessage.textContent = "Error sending message.";
-    console.error('Error!', error.message);
+    fetch(scriptURL, {
+      method: 'POST',
+      body: formPayload
+    })
+    .then(response => {
+      if (response.ok) {
+        successMessage.textContent = "Thanks! We'll be in touch soon.";
+        form.reset();
+        document.getElementById('popup').style.display = 'flex';
+      } else {
+        successMessage.textContent = "Something went wrong. Try again!";
+      }
+    })
+    .catch(error => {
+      successMessage.textContent = "Error sending message.";
+      console.error('Error!', error.message);
+    });
   });
-});
+</script>
 
-  </script>
   <!-- Add this inside <body> just before </body> -->
 <div id="popup" style="
   display:none;
